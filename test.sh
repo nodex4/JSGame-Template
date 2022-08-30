@@ -1,0 +1,1 @@
+mv "frankarendpoth.github.io/legacy/content/pop-vlog/javascript/2018/006-rabbit-trap" "game-template"
