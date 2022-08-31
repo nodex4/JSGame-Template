@@ -1,4 +1,4 @@
-class Base {…}
+class Base {}
 elem.addEventListener ("click", keyPressed(event, up));
 
 class Game extends Base {
