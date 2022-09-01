@@ -1,5 +1,7 @@
+import { Sitting } from "./playerStates.js"
+
 export class Player {
-  constructor(game) {
+  constructor(world) {
     this.x = 0;
     this.y = 0;
     this.vx = 0;
@@ -9,10 +11,16 @@ export class Player {
     this.weight = 1;
     this.speed = 0;
     this.maxSpeed = 5;
-    this.jumpPower = 25;
-    this.game = game;
+    this.jumpPower = 20;
+    this.world = world;
     this.image = document.getElementById("player");
+    // this.frameX = 0;
+    // this.frameY = 0;
+    this.states = [new Sitting(this)];
+    this.currentState = this.states[0];
+    this.currentState.enter()
   }
+  
   update(input) {
     // horizontal movement
     this.x += this.speed;
@@ -21,7 +29,7 @@ export class Player {
     else this.speed = 0;
     // set horizontal boundaries
     if (this.x < 0) this.x = 0;
-    if (this.x > this.game.width - this.width) this.x = this.game.width - this.width;
+    if (this.x > this.world.width - this.width) this.x = this.world.width - this.width;
 
     // vertical movement
     if (input.includes("ArrowUp") && this.onGround()) this.vy -= this.jumpPower;
@@ -30,10 +38,13 @@ export class Player {
     else this.vy = 0;
   }
 
+ 
   draw(context) {
     context.drawImage(this.image, this.x, this.y, this.width, this.height);
+    console.log("drawing")
   }
+  
   onGround() {
-    return this.y >= this.game.height - this.height;
+    return this.y >= this.world.height - this.height;
   }
 }
