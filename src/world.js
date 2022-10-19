@@ -2,8 +2,8 @@ export class World {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.gravity = 0.9;
-    this.friction = 0.3; 
+    this.friction = 0.7; 
+    this.gravity = 0.5;
+    this.groundMargin = 25;
   }
-  
 }

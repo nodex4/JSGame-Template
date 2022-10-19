@@ -8,11 +8,12 @@ window.addEventListener("load", function() {
   const ctx = canvas.getContext("2d");
   canvas.width = 500;
   canvas.height = 500;
-  const fps = 60;
-  // gameSpeed = 1;
-  // if (fps = 60) gameSpeed = 1;
-  // else if (fps = 120) gameSpeed = 0.5;
-  // else if (fps = 240) gameSpeed = 0.25;
+  const fps = 120;
+  let gameSpeed = 1;
+  if (fps === 60) gameSpeed = 1;
+  else if (fps === 120) gameSpeed = 0.5;
+  else if (fps === 240) gameSpeed = 0.25;
+  
 
   class Game {
     constructor(width, height) {

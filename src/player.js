@@ -1,41 +1,53 @@
-import { Sitting } from "./playerStates.js"
+import { Running, Sliding, Jumping, Falling } from "./playerStates.js"
 
 export class Player {
   constructor(world) {
+    this.world = world;
     this.x = 0;
-    this.y = 0;
+    this.y = 0; // this.world.height - this.height - this.world.groundMargin
     this.vx = 0;
     this.vy = 0;
     this.width = 50;
     this.height = 50;
-    this.weight = 1;
-    this.speed = 0;
-    this.maxSpeed = 5;
+    this.rotation = 0;
     this.jumpPower = 20;
-    this.world = world;
+    this.speed = 5;
     this.image = document.getElementById("player");
     // this.frameX = 0;
     // this.frameY = 0;
-    this.states = [new Sitting(this)];
+    this.states = [new Running(this, this.world), new Sliding(this, this.world), new Jumping(this, this.world), new Falling(this, this.world)];
     this.currentState = this.states[0];
     this.currentState.enter()
   }
   
   update(input) {
+    this.currentState.handleInput(input);
+    
     // horizontal movement
-    this.x += this.speed;
-    if (input.includes("ArrowLeft")) this.speed = -this.maxSpeed;
-    else if (input.includes("ArrowRight")) this.speed = this.maxSpeed;
-    else this.speed = 0;
-    // set horizontal boundaries
-    if (this.x < 0) this.x = 0;
-    if (this.x > this.world.width - this.width) this.x = this.world.width - this.width;
+    if (input.includes("ArrowLeft")) this.vx = -this.speed;
+    else if (input.includes("ArrowRight")) this.vx = this.speed;
+    this.x += this.vx;
 
     // vertical movement
-    if (input.includes("ArrowUp") && this.onGround()) this.vy -= this.jumpPower;
     this.y += this.vy;
-    if (!this.onGround()) this.vy += this.weight;
-    else this.vy = 0;
+    // vertical boundaries
+    if (this.y < 0) {
+      this.y = 0
+      this.vy = 0
+      
+    // horizontal boundaries
+    if (this.x < 0) this.x = 0;
+    if (this.x > this.world.width - this.width) this.x = this.world.width - this.width;
+    };
+
+    
+    if(this.onGround()) {
+            this.vx *= this.world.friction;
+            this.vy = 0;
+        } else {
+            this.vy += this.world.gravity;
+        }
+
   }
 
  
@@ -46,5 +58,9 @@ export class Player {
   
   onGround() {
     return this.y >= this.world.height - this.height;
+  }
+  setState(state) {
+    this.currentState = this.states[state];
+    this.currentState.enter();
   }
 }
