@@ -30,14 +30,14 @@ export class Player {
 
     // vertical movement
     this.y += this.vy;
+    // horizontal boundaries
+    if (this.x < 0) this.x = 0;
+    if (this.x > this.world.width - this.width) this.x = this.world.width - this.width;
+
     // vertical boundaries
     if (this.y < 0) {
       this.y = 0
       this.vy = 0
-      
-    // horizontal boundaries
-    if (this.x < 0) this.x = 0;
-    if (this.x > this.world.width - this.width) this.x = this.world.width - this.width;
     };
 
     
